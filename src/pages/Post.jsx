@@ -2,19 +2,22 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { NavLink, useLocation } from "react-router-dom";
-import { fetchBlogthunk } from "../redux/Fetures/SingleBlog/singleBlogSlice";
+import { fetchBlogthunk, saveBlog } from "../redux/Fetures/SingleBlog/singleBlogSlice";
 
-
+import logo from '../assets/images/LWSBlog.svg'
 
  const Post = () => {
   let location = useLocation();
   const blog = useSelector(state => state?.blog?.blog) || {}
- const {title,createdAt,likes,image,tags,description} = blog
+ const {title,likes,image,tags,description ,isSaved,id} = blog
+ console.log(id)
   const dispatch =useDispatch()
    useEffect(() => {
     dispatch(fetchBlogthunk(location?.pathname.split('/')[2]))
    }, [dispatch,location?.pathname])
-
+const handleSave =()=>{
+  dispatch(saveBlog(id))
+}
   return (
    <>
     {/* <!-- navbar start  --> */}
@@ -22,7 +25,7 @@ import { fetchBlogthunk } from "../redux/Fetures/SingleBlog/singleBlogSlice";
     <div className="navbar-container">
       {/* <!-- logo --> */}
       <div className="logo">
-        <img src="./images/LWSBlog.svg" alt="search" />
+        <img src={logo} alt="search" />
       </div>
 
       {/* <!-- auth buttons , This will nonfunctional, just for nice looking --> */}
@@ -41,14 +44,14 @@ import { fetchBlogthunk } from "../redux/Fetures/SingleBlog/singleBlogSlice";
   <section className="post-page-container">
     {/* <!-- detailed post  --> */}
     <main className="post">
-      <img src="./images/mern.webp" alt="githum" className="w-full rounded-md" id="lws-megaThumb" />
+      <img src={image} alt="githum" className="w-full rounded-md" id="lws-megaThumb" />
       <div>
         <h1 className="mt-6 text-2xl post-title" id="lws-singleTitle">
        {title}
         </h1>
         <div className="tags" id="lws-singleTags">
           {
-            tags?.map(tag => <span className="badge" key={tag}>{tag}</span>)
+            tags?.map(tag => <span className="" key={tag}>#{tag}</span>)
           }
         </div>
         <div className="btn-group">
@@ -58,19 +61,18 @@ import { fetchBlogthunk } from "../redux/Fetures/SingleBlog/singleBlogSlice";
           </button>
           {/* <!-- handle save on button click --> */}
           {/* <!-- use ".active" class and "Saved" text  if a post is saved, other wise "Save" --> */}
-          <button className="active save-btn" id="lws-singleSavedBtn">
+          {
+          isSaved?<button  className="active save-btn" id="lws-singleSavedBtn">
             <i className="fa-regular fa-bookmark"></i> Saved
+          </button>:<button onClick={handleSave} className="save-btn" id="lws-singleSavedBtn">
+            <i className="fa-regular fa-bookmark"></i> Save
           </button>
+          }
         </div>
         <div className="mt-6">
           <p>
-            A MERN stack comprises a collection of four frameworks (MongoDB,
-            ExpressJs, ReactJs and NodeJs) used to develop full-stack
-            javascript solutions for rapid, scalable, and secure applications.
-            Each framework serves a different purpose in creating successful
-            web applications. It is an excellent choice for companies looking
-            to develop high-quality responsive applications quickly using just
-            one language.
+           {description}
+           
           </p>
         </div>
       </div>

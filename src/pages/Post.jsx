@@ -1,6 +1,20 @@
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+
+import { NavLink, useLocation } from "react-router-dom";
+import { fetchBlogthunk } from "../redux/Fetures/SingleBlog/singleBlogSlice";
+
 
 
  const Post = () => {
+  let location = useLocation();
+  const blog = useSelector(state => state?.blog?.blog) || {}
+ const {title,createdAt,likes,image,tags,description} = blog
+  const dispatch =useDispatch()
+   useEffect(() => {
+    dispatch(fetchBlogthunk(location?.pathname.split('/')[2]))
+   }, [dispatch,location?.pathname])
+
   return (
    <>
     {/* <!-- navbar start  --> */}
@@ -21,8 +35,8 @@
   {/* <!-- navbar end  --> */}
   {/* <!-- Go Home / Go Back --> */}
   <div className="container mt-8">
-    <a href="index.html" className="inline-block text-gray-600 home-btn" id="lws-goHome"><i
-        className="mr-2 fa-solid fa-house"></i>Go Home</a>
+    <NavLink to='/' className="inline-block text-gray-600 home-btn" id="lws-goHome"><i
+        className="mr-2 fa-solid fa-house"></i>Go Home </NavLink>
   </div>
   <section className="post-page-container">
     {/* <!-- detailed post  --> */}
@@ -30,15 +44,17 @@
       <img src="./images/mern.webp" alt="githum" className="w-full rounded-md" id="lws-megaThumb" />
       <div>
         <h1 className="mt-6 text-2xl post-title" id="lws-singleTitle">
-          MERN stack for Web Development
+       {title}
         </h1>
         <div className="tags" id="lws-singleTags">
-          <span>#python,</span> <span>#tech,</span> <span>#git</span>
+          {
+            tags?.map(tag => <span className="badge" key={tag}>{tag}</span>)
+          }
         </div>
         <div className="btn-group">
           {/* <!-- handle like on button click --> */}
           <button className="like-btn" id="lws-singleLinks">
-            <i className="fa-regular fa-thumbs-up"></i> 100
+            <i className="fa-regular fa-thumbs-up"></i> {likes}
           </button>
           {/* <!-- handle save on button click --> */}
           {/* <!-- use ".active" class and "Saved" text  if a post is saved, other wise "Save" --> */}

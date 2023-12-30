@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom"
 
 
 const SinglePostCard = ({post}) => {
-    const {id, title, description, createdAt, likes, isSaved ,image} = post
+    const {id, title, createdAt, likes, isSaved ,image,tags} = post
   return (
   <>
    <div className="lws-card">
-        <NavLink to={`post/${id}`}>
+        <NavLink to={`blogs/${id}`}>
           <img src={image} className="lws-card-image" alt="" />
         </NavLink>
         <div className="p-4">
@@ -16,8 +16,12 @@ const SinglePostCard = ({post}) => {
             <p className="lws-publishedDate">{createdAt}</p>
             <p className="lws-likeCount"><i className="fa-regular fa-thumbs-up"></i>{likes}</p>
           </div>
-          <NavLink to={`post/${id}`} className="lws-postTitle"> {title}</NavLink>
-          <div className="lws-tags"><span>#python,</span> <span>#tech,</span> <span>#git</span></div>
+          <NavLink to={`blogs/${id}`} className="lws-postTitle"> {title}</NavLink>
+          <div className="lws-tags">{
+            
+                tags?.map(tag => <span className="lws-badge" key={tag}>{tag}</span>)
+            
+          }</div>
           {/* <!-- Show this element if post is saved --> */}
          {
          isSaved? <div className="flex gap-2 mt-4">

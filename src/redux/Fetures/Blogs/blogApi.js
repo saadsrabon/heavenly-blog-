@@ -1,4 +1,8 @@
+import { instance } from "../../../axios/instance";
+
 const fetchblogs = async () => {
-  const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  const response = await instance.get("/blogs");
   return response.data;
 }
+
+export default fetchblogs;

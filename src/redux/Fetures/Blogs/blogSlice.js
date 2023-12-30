@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetchblogs from "./blogApi";
 
-const fetchBlogsthunk = createAsyncThunk("blogs/fetchBlogs", async () => {
+export const fetchBlogsthunk = createAsyncThunk("blogs/fetchBlogs", async () => {
     const data = await fetchblogs();
     return data;
 });
